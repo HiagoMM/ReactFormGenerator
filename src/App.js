@@ -1,24 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
+import Generator from './generator';
 import './App.css';
+import { maxLength, asyncTeste } from './generator/Validators';
+
+const configs = [
+  {
+    name: 'nome',
+    field: <input />,
+    props: { placeholder: 'oi' },
+    validators: [[maxLength(5)], [asyncTeste]]
+  }
+];
 
 function App() {
+  const submit = value => {
+    console.log(value);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Generator
+        buttonName="entrar"
+        configs={configs}
+        onSubmit={submit}
+      ></Generator>
     </div>
   );
 }
