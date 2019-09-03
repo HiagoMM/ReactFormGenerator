@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function getState(configs) {
   const state = {};
   for (var config of configs) {
@@ -37,8 +39,33 @@ export async function validate(configs, state) {
 
 export function prepareJson(state) {
   const finalJson = {};
-  for (const key of Object.keys(state)) {
+  for (var key of Object.keys(state)) {
     finalJson[key] = state[key].value;
   }
   return finalJson;
+}
+
+export function getField(config) {
+  switch (config.field.type) {
+    case 'input':
+      return <input />;
+    case 'select':
+      return (
+        <select>
+          {config.field.options.map(option => {
+            return (
+              <option
+                key={option.value}
+                value={option.value}
+                selected={option.selected}
+              >
+                {option.label}
+              </option>
+            );
+          })}
+        </select>
+      );
+    default:
+      return <input />;
+  }
 }

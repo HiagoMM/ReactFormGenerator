@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { getState, validate, prepareJson } from './generatorUtil';
+import { getState, validate, prepareJson, getField } from './generatorUtil';
 
 export default props => {
   const configs = props.configs;
   const [state, setState] = useState(getState(configs));
-  let key = 0;
 
   const handleSubmit = () => {
     validate(configs, state).then(([isValid, stateWithErrors]) => {
@@ -19,7 +18,7 @@ export default props => {
   return (
     <div style={props.style}>
       {configs.map(config => {
-        config.props.key = key++;
+        config.props.key = config.name;
         config.props.value = state[config.name.value];
         config.props.onChange = value => {
           setState({
@@ -27,7 +26,7 @@ export default props => {
             [config.name]: { ...state[config.name], value: value.target.value }
           });
         };
-        return React.cloneElement(config.field, config.props);
+        return React.cloneElement(getField(config), config.props);
       })}
       <button onClick={() => handleSubmit()}>
         {props.buttonName || 'Submit'}
